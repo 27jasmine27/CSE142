@@ -1,0 +1,121 @@
+//Jasmine Kennedy
+//cse142
+//dna
+//this program takes a dna file, and returns the nucleotides, codons, mass percentages,
+//and each occurence of each nucleotide
+import java.util.*;
+import java.io.*;
+public class DNA {
+   public static final int
+   MINCODONS = 5,
+   MINMASSPERCENT= 30,
+   BASES= 4,
+   CODONGROUP= 3;
+   public static void main(String[] args) throws FileNotFoundException {
+      Scanner console = new Scanner(System.in);
+      intro();
+      boolean hasNext = false;
+      int junkCount = 0;
+      
+      System.out.print("Input file name? ");
+      Scanner inputFile = new Scanner (new File(console.nextLine()));
+      System.out.print("Output file name? ");
+      PrintStream outputFile = new PrintStream(console.nextLine());
+      
+      if (inputFile.hasNextLine()){
+         hasNext= true;
+      }
+      while(hasNext){
+         String name = inputFile.nextLine();
+         System.out.println("Region name: " +name);
+         String nucleotides = inputFile.nextLine();
+         nucleotides = nucleotides.toUpperCase();
+         System.out.println("Nucleotides: " + nucleotides);
+         int[] count = new int[BASES];
+         double[] massVal = new double[BASES + 1];
+         count = nucleotideCount(nucleotides, count, massVal);
+         String[] codons = new String[nucleotides.length() / CODONGROUP];
+      }
+   }
+   
+   //intro
+   public static void intro(){
+      System.out.println("This program reports information about DNA ");
+      System.out.println("nucleotide sequences that may encode proteins. ");
+   }
+   
+   //calculate amount of each base pair in sequence
+   //pass in nucleotides String to evaluate for specific characters
+   //pass in count[] array so that you can keep track of each instance of each base
+   //pass in double massVal to add each base to the array at that index
+   //instead of multiplying array index of count to array index of masses in another method
+   public static int[] nucleotideCount(String nucleotides, int[] count, double[] massVal){
+      for(int i = 0; i < count.length; i++){
+         if(nucleotides.charAt(i) == 'A'){
+            massVal[0]+= 135.128;
+            count[0]++;
+            
+         } else if(nucleotides.charAt(i) == 'C'){
+            massVal[1]+= 111.103;
+            count[1]++;
+            
+         } else if(nucleotides.charAt(i) == 'G'){
+            massVal[2]+= 151.128;
+            count[2]++;
+            
+         } else if(nucleotides.charAt(i) == 'T'){
+            massVal[3]+= 125.107;
+            count[3]++;
+         } else {
+            massVal[4]+= 100.00;
+         }
+      }
+      System.out.println("Nuc. counts: " + Arrays.toString(count));
+      System.out.println("Total Mass%: " + Arrays.toString(massVal));
+      return count;
+   }
+   
+   //group nucleotides into groups of 3 to form codons
+   //pass in String nucleotides to scan over,
+   //pass in String array codons to group into 3 and reassign into codons array to print
+   public static String[] calcCodons(String nucleotides, String[] codons) {
+      String str = "";
+      String junk = "";
+      for(int i = 0; i < nucleotides.length(); i++) {
+         if(nucleotides.charAt(i) != '-') {
+            str += nucleotides.charAt(i);
+         } else
+            junk += nucleotides.charAt(i);
+      }
+      //make new array holding groups of 3 by using length/3
+      for(int i = 0; i < str.length(); i = i+3) { // loop at the increment of 3
+         String str1 = str.substring(i, i+3); // use substring method to extract the codons by group of 3
+         for (int j = 0; j < codons.length; j++){
+            codons[j]= str1; // go through and assign each index of codons whatever just got saved in str1
+            
+         }
+      }
+      System.out.println("Codons List: " +  Arrays.toString(codons));
+      return codons;
+   }
+   
+   //check if codon in beggining of array is start codon
+   //check if c and g= at least 30% of mass
+   //check if ends with a valid stop codon(one of the following: TAA, TAG, or TGA)
+   public static String ifProtein(String[] codons, double[] massCount) {
+      if((codons[0].equals("ATG"))) {
+         if(codons.length >= 5 && (massCount[1] + massCount[2]) >= 30.0) {
+            if(codons[codons.length - 1].equals("TAA") || codons[codons.length - 1].equals("TAA") || codons[codons.length - 1].equals("TGA")){
+               return "Yes";
+               //System.out.print("Is protein?: YES ");
+            }
+         }
+      }
+      System.out.print("Is protein?: NO ");
+      return "No";  //not a protein
+   }
+}
+
+
+
+
