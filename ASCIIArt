@@ -1,0 +1,19 @@
+//Jasmine Kennedy
+//1/12/18
+//cse 142
+//ta: Isabel Atkinson
+//this program prints a happy face with ear muffs on
+public class AsciiArt{
+   public static void main (String [] args){
+     pound(); 
+
+   }
+   //print 6 lines of a happy face with nested forloop
+   public static void pound(){
+      for (int lines = 1; lines <= 5; lines++){
+         for (int pound = 0; pound <= -pound * lines +2; pound++){
+            System.out.println("# " + " ^_^ " + " # ");
+         }
+      }
+   }
+}
