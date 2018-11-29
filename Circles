@@ -1,0 +1,87 @@
+//Jasmine Kennedy
+//cse 142
+//TA: Isabel Atkinson
+//doodle project
+//This project uses methods to draw concentric circles that are yellow and black, and circles in rows and columns
+import java.awt.*; //so that I can use graphics
+public class Circles {
+	public static void main (String[] args){
+		//get drawing panel
+		DrawingPanel dp = new DrawingPanel(500, 350);
+		dp.setBackground(Color.CYAN);
+		Graphics g = dp.getGraphics();
+		g.setColor(Color.YELLOW);
+		
+		
+		
+		drawCircle(0, 0, 100, 10, g);
+		drawCircle(130, 25, 100, 10, g);
+		drawCircle(260, 0, 60, 6, g);
+		drawCircle(360, 50, 80, 4, g);
+		
+		drawStackedCircle(10, 170, 48, 3, 4, g);
+		drawStackedCircle(180, 200, 24, 5, 2, g);
+		drawStackedCircle(330, 170, 72, 2, 9, g);	
+	}
+	
+	//draw the top half circles which have varying sizes, locations, number of black circles inside
+   //and number of gaps between the circles
+   //x= x coordinate, y= y coordinate, size= width/height (combined to reduce redundancy)
+   //line= number of black circles inside of the yellow circle
+   //Graphics g to bring in pen to method
+	public static void drawCircle(int x, int y, int size, int line, Graphics g){
+		g.setColor(Color.YELLOW);
+		g.fillOval(x, y, size, size);
+		g.setColor(Color.BLACK);
+		int space = (size / line); //get 10 to subtract from size (w/h)
+		int gap = space / 2; //get gap between circles (100/10/2= 5 gap)
+		for (int i = 0; i <= line; i++){
+			g.drawOval(x + i * gap, y + i * gap, size - i * space, size - i * space);
+		}
+	}
+	
+   //this method draws the stacked circles on the bottom half. they vary in number of rows/ number
+   //of black circles inside, which also changes the gaps between the black circles
+	//draw the bottom half (stacked) circles
+   //x= x coordinate, y= y coordinate, size= width/height (combined to reduce redundancy)
+   //row = number of rows/cols (combined to reduce redundancy bc they are always the same)
+   //line= number of black circles inside of the yellow circle
+   //Graphics g to bring in pen to method
+	public static void drawStackedCircle(int x, int y, int size, int row, int line, Graphics g){
+		g.setColor(Color.GREEN);
+		g.fillRect(x, y, size * row, size * row);
+      g.setColor(Color.BLACK);
+      g.drawRect(x, y, size * row, size * row);
+		
+		for (int i = 0; i < row; i++){
+			for (int j = 0; j < row; j++){
+            //drawCircle(x, y, size, line, g);
+				drawCircle(x + size * i, y + size * j, size, line, g);
+            
+				
+			}
+			//draw cross through the green boxes
+         //do this last in method so that it is on top of the circles
+         //first line use regular x,y because line only slides over and down 
+         //second line (on right side) has first x change, and second y change (down/over)
+			g.setColor(Color.BLACK);
+			g.drawLine(x, y, x + (size*row), y + (size*row));
+			g.drawLine(x + (size * row), y , x , y + (size * row));
+		}
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
