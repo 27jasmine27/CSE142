@@ -1,0 +1,117 @@
+//Jasmine Kennedy
+//cse 142
+//Isabel Atkinson
+//2/23/18
+//this program asks the user for input (adjectives, nouns, etc) and transcribes it into a new file, creating a madlib. 
+//I have no idea what i'm doing, this is terrible
+// I'm probs going to go try finance or something that doesnt ruin my self esteem/make me feel dumb af
+
+import java.util.*;
+import java.io.*;
+public class MadLibs {
+   public static void main (String[] args) throws FileNotFoundException {
+      Scanner console = new Scanner(System.in);
+      directions();
+      String userInput = ""; //make it empty so the user can enter their choice 
+      
+      while(!(userInput.equals("q"))){
+      System.out.println("(C)reate mad-lib, (V)iew mad-lib, (Q)uit? ");
+      userInput = console.nextLine();
+         if (userInput.equals("c") || userInput.equals("C")) {
+            Scanner input = new Scanner (new File(inputScanner(console)));
+            System.out.println("Output file name:");
+            String output = console.nextLine();
+            PrintStream streamOutput = new PrintStream(new File (output));
+            streamOutput = play(input, streamOutput);  
+         }
+         if (userInput.equals("v") || userInput.equals("V")) {
+            String fileName = inputScanner(console);
+            returnFile(fileName);
+         }
+       }
+         if (userInput.equals("q") || userInput.equals("Q")) {
+            System.out.println();
+            System.exit(0);   
+         }
+   }
+   
+   //into for user to know how to play
+   public static void directions(){
+      System.out.println("Welcome to the game of Mad Libs. ");
+      System.out.println("I will ask you to provide various words ");
+      System.out.println("and phrases to fill in a story.");
+      System.out.println("The result will be written to an output file.");
+      System.out.println();
+   }
+   
+   //take user input to name file--> store name as a string
+   //create file names after the string (user input)
+   //continues checking if file name given by user--> if not able to find the file it keeps prompting
+   public static String inputScanner(Scanner console) throws FileNotFoundException {
+      System.out.println("Input file name: ");
+      String fileName = console.nextLine();
+      File f = new File(fileName);
+      while (!f.canRead()){
+         System.out.println("File not found. Try again: ");
+         fileName = console.nextLine();
+         f = new File(fileName);  
+      }
+      return fileName;  //saves what the user named the file so that it can be used in other methods
+   }
+   
+   //print entire file (has file not found exception in case the user passes in a non compatible type)
+   //the while loop continues printing each line of the file while there is a next line available
+   public static void returnFile (String fileName) throws FileNotFoundException {
+      System.out.println();
+      Scanner output = new Scanner (new File(fileName)); 
+      while (output.hasNextLine()){
+         System.out.println(output.nextLine());
+      }
+      
+      System.out.println();
+   }
+   
+   //this method takes user input and puts it into a new output file
+   // it takes user input (Scanner as a parameter) and Printstream Output
+   //so that the input can be saved into a new file and then viewed
+      public static PrintStream play (Scanner input, PrintStream output){
+      Scanner console = new Scanner(System.in);
+      System.out.println();
+      while (input.hasNextLine()){
+         String line = input.nextLine();
+         Scanner lineScan = new Scanner(line);
+         String replace = "";
+         //continue running through file while there are lines to check
+         while (lineScan.hasNext()){
+            String word = lineScan.next();
+            String trash = "";
+            if (word.startsWith("<")){
+               char letter = word.charAt(1);
+               String newWord = word.substring(1, word.length()-1);
+               if (letter == 'a' || letter == 'A' || letter == 'e'||letter == 'E'||letter == 'i'||
+               letter == 'I' || letter == 'o' || letter == 'O' || letter == 'u' || letter == 'U'){
+                  System.out.print("Please type an ");
+               }
+               else {
+                  System.out.print("Please type a "); 
+               }
+               
+               if (newWord.contains("-")){
+                  newWord = newWord.replace("-", " ");
+               }
+               System.out.print(newWord + ": ");
+               trash = console.nextLine();
+               replace = replace + " " + trash;
+               output.print(trash + " ");
+               
+            }
+               output.print(word + " ");
+         }
+         output.println(replace);
+         
+      }
+      System.out.println("Your mad-lib has been created!");
+      System.out.println();
+      return output;
+   }
+}
