@@ -1,0 +1,96 @@
+//Jasmine Kennedy
+//TA: Isabel Atkinson
+//this program asks the user to guess a random number, and continues asking what number it is until
+//guessing correctly. After guessing correctly the user can choose to play again or not.
+//if they do not want to play again statistics about their play time is released (best game, num games, etc)
+import java.util.*;
+public class GuessingGame {
+   public static final int MAX = 5;
+   public static void main (String args[]) {
+      Scanner console = new Scanner(System.in);
+      Random rand = new Random();
+      int numGames = 1;
+      int numGuess = 0; //num of guesses
+      int bestGame= 1000000000; //made it a big number to switch the first run
+      boolean playAgain = true;
+      intro();
+      numGuess += playGame(rand, MAX, console);
+      while (playGameAgain(console, playAgain)) {
+         int guessesNum = playGame(rand, MAX, console);
+         numGuess= numGuess + guessesNum;
+         numGames++;
+         if (guessesNum < bestGame){
+            bestGame = guessesNum;
+         }
+      }
+      stats (numGuess, numGames, bestGame);
+   }
+   
+   //introduction haiku
+   public static void intro() {
+      System.out.println("This is a fun game" );
+      System.out.println("guess the computer's number");
+      System.out.println("good luck guessing it!");
+      System.out.println();
+      
+   }
+   
+   //check if guess is greater than or less than num and give hints to the user
+   //pass in rand for rand num, max number to test with set number, guess to take in guesses
+   //numGuess to keep count of how many guesses it takes the user, and best game to update and
+   //track which game took the least amount of guesses
+   public static int playGame (Random rand, int MAX, Scanner console) {
+      int num = rand.nextInt(MAX) + 1;
+      System.out.println("I'm thinking of a number between 1 and " + MAX + "...");
+      System.out.print("Your guess? ");
+      int guess = console.nextInt();
+      int totalGuess = 1;
+      while (num != guess) {
+         if (guess > num) {
+            System.out.println("It's lower. ");
+         } else {
+            System.out.println("It's higher. ");
+         }
+         System.out.print("Your guess? ");
+         totalGuess++;
+         int next = console.nextInt();
+         guess = next; //reassign new guess to "guess" to go through if else again
+      }
+      System.out.print("You got it right in " + totalGuess + " guesses!");
+      System.out.println();
+      return totalGuess;
+   }
+   
+   //ask user if they want to play again
+   //start with boolean in main set to true to play first game,
+   //only continue playing when true (false if the user inputs any non y char)
+   //takes in user input = console parameter, and boolean to get updated
+   //and checked in while loop to continue playing
+   public static boolean playGameAgain(Scanner console, boolean playAgain) {
+      System.out.print("Do you want to play again? ");
+      String input = console.next();
+      //System.out.println();
+      if(input.charAt(0)=='Y' || input.charAt(0)=='y') {
+         playAgain = true;
+         //numGuess++;
+      } else {
+         playAgain = false;
+      }
+      return playAgain;
+   }
+   
+   //print stats on the game using cumulative sum of games played
+   //and the sum of how many guesses it took the user
+   //takes in numGuess (cumulative sum of guesses from playgame method)
+   //takes in numGames (cumulative sum of games played)
+   //best game from main method
+   public static void stats (int numGuess, int numGames, int bestGame) {
+      System.out.println();
+      System.out.println("Overall results: ");
+      System.out.println("Total games = " + numGames );
+      System.out.println("Total guesses = " + numGuess);
+      System.out.println("Guesses/game = " + ((double)numGuess/ (double)numGames));
+      System.out.println("Best game = " + bestGame);
+   }
+}
+
