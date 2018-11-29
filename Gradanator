@@ -1,0 +1,114 @@
+//Jasmine Kennedy
+//TA= Isabel
+//cse142
+//gradanator
+//this program takes user input on their grades, test scores and weights
+//and outputs their weighted score, gpa, and a creative message
+import java.util.Scanner;
+import java.util.*;
+public class Gradanator {
+   public static void main (String[] args) {
+      Scanner console = new Scanner(System.in);
+      intro();
+      double grade = 0.0;
+      grade += test(console, "Midterm:");
+      grade += test(console, "Final:");
+      grade += homework(console);
+      overallPercent(grade);
+   }
+   
+   //introduction for the user
+   public static void intro() {
+      System.out.println("This program reads exam/homework scores");
+      System.out.println("and reports your overall course grade.");
+      System.out.println();  
+   }
+   
+   //this method asks the user for both their midterm and final exam scores
+   //weight, shift, etc and uses them to calculate final grades
+   //uses console parameter to save and use user input
+   //uses name parameter to use this method as both midterm and final
+   //midterm or test--> use paramater name so it's just an outline
+   public static double test(Scanner console, String name) {
+      System.out.println(name);
+      System.out.print("Weight (0-100)? ");
+      int weight = console.nextInt();
+      System.out.print("Score earned? ");
+      double score = console.nextInt();
+      System.out.print("Were scores shifted (1=yes, 2=no)? ");
+      int shift = console.nextInt();
+      //if there was a shift
+      if (shift== 1) {
+         System.out.print("Shift amount? ");
+         double shiftNum = console.nextInt();
+         score = score + shiftNum;
+         // capped at max of 100
+         if (score > 100){
+            score= 100;
+         }
+      }
+      System.out.println("Total points = " + (int)score + " / " + "100");
+      double weightedScore = weight * score /100;
+      //divide weighted score by 100 so you don't get a big ass number
+      System.out.println("Weighted score = " + weightedScore + " / " + weight);
+      System.out.println();
+      return weightedScore;
+   }
+   
+   //homework method to prompt the user about homeowork assignment scores
+   //and section points earned
+   //console parameter so that user input can be stored and used for calculations
+   public static double homework(Scanner console) {
+      System.out.println("Homework: ");
+      System.out.print("Weight (0-100)? ");
+      int homeworkWeight = console.nextInt();
+      System.out.print("Number of assignments? ");
+      int homeworkAss = console.nextInt();
+      double homeworkScore = 0.0;
+      double homeworkTotal = 0.0;
+      for (int i = 1; i<= homeworkAss; i++) {
+         System.out.print("Assignment " + i + " score and max? ");
+         homeworkScore = homeworkScore + console.nextInt();
+         homeworkTotal = homeworkTotal + console.nextInt();
+      }
+      //attendance
+      System.out.print("How many sections did you attend? ");
+      double attendance = console.nextInt();
+      double sectionPoints = (int)attendance * 5;
+      //section points capped at 30
+      if(sectionPoints > 30){
+         sectionPoints= 30;
+      }
+      System.out.println("Section points = " + (int)sectionPoints + " / 30");
+      int totalPoints = (int)homeworkScore + (int)sectionPoints;
+      int totalPointsDenom = (int)homeworkTotal + 30;
+      double weightedScoreTwo =((homeworkScore + sectionPoints) * homeworkWeight / totalPointsDenom);
+      System.out.println("Total points = " + totalPoints + " / " + totalPointsDenom);
+      System.out.printf("Weighted score = %.1f", weightedScoreTwo);
+      System.out.print(" / " + homeworkWeight );
+      System.out.print("\n");
+      System.out.println();
+      return weightedScoreTwo;   
+   }
+   
+   //method to calculate overall percent with if else loop to determine which gpa bracket
+   //calculates overallPercent using cumulative sum from grade in main method)
+   public static void overallPercent(double grade){
+      double overallPercent = grade;
+      System.out.printf("Overall percentage = %.1f", overallPercent);
+      System.out.println();
+      if(overallPercent >= 85){
+         System.out.println("Your grade will be at least: 3.0");
+      } else if (overallPercent <= 84.99 && overallPercent >= 75){
+         System.out.println("Your grade will be at least: 2.0");
+      } else if (overallPercent <= 74.99 && overallPercent >= 60){
+         System.out.println("Your grade will be at least: .7 ");
+      } else{
+         System.out.println("Your grade will be at least: 0.0");
+      }
+      //custom message for user
+      System.out.println();
+      System.out.println("You're going to do great this quarter!!!");
+      System.out.println("if u don't get into cs get a canadian studies degree");
+   }
+}
