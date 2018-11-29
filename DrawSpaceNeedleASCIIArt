@@ -1,0 +1,89 @@
+//Jasmine Kennedy
+//cse142
+//TA: Isabel Atkinson
+//ASCII art assignment
+//This program used nested forloops to build the space needle without redunant methods, it is broken up into four methods: lines, tophalf, bottom half, and percentages (top to bottom)
+public class SpaceNeedle {
+   public static final int SIZE = 4;
+   
+   public static void main (String[] args){
+      straightLine();
+      topHalf();
+      bottomHalf();
+      straightLine();
+      percentage();
+      topHalf();
+      
+   }
+   
+   //straight stick part of space needle
+   public static void straightLine() {
+      for (int straight = 1; straight <= SIZE; straight++){
+         for (int space = 1; space <= SIZE * 3; space++){
+            System.out.print(" ");
+         }
+         System.out.println("||");
+      }
+      
+   }
+   
+   //this method draws the top half of the needle using an outer fourloop
+   //to calculate the number of lines (based on class constant of 4)
+   // and then calcultes number of spaces based on SIZE (decrease space by 3)
+   // increase dots by 3
+   //and prints the _/:::||:::\_ figure
+   public static void topHalf(){
+      for (int line = 1; line <= SIZE; line++){
+         for (int space = 1; space<= (SIZE * 3) - (line * 3); space++){
+            System.out.print(" ");
+         }
+         System.out.print("__/");
+         for (int dots = 1;  dots<= 3 * line - 3; dots++){
+            System.out.print(":");
+         }
+         System.out.print("||");
+         for (int moreDots = 1; moreDots<= 3 * line - 3; moreDots++){
+            System.out.print(":");
+         }
+         System.out.println("\\__");
+      }
+            //middle part of top half
+            //prints size * 6 of |""""""| image (bottom half of top)
+            //consolidated this into tophalf method to reduce redundancy
+             System.out.print("|");
+             for (int dash= 1; dash <= SIZE *6; dash++){
+               System.out.print("\"");
+             }
+             System.out.println("|");
+   }
+   
+   //bottom half of space needle
+   //calculate number of spaces bc it increases by 2 (1 * 2- 2= 0, 2*2-2=2)
+   //(starts at 11 /\/\, decreases by 2 /\/\ each time)
+   // calculate number of slashed by SIZE * 3 +1 - line *2 (get to 11)
+   public static void bottomHalf(){
+      for (int line= 1; line<= SIZE; line++){
+         for (int space= 1; space<= (line * 2 -2); space++){
+            System.out.print(" ");
+         }
+         System.out.print("\\_");
+         
+         for (int slashes= 1; slashes<= (SIZE * 3 + 1) - (line * 2); slashes++){
+            System.out.print("/\\");
+         }
+         System.out.println("_/");
+      }
+   }
+   
+   //percentage part
+   //number of lines is SIZE^2, calc number of spaces from edge by 4* 3 -3
+   public static void percentage(){
+      for (int line = 1; line <= (SIZE * SIZE); line++){
+         for (int space = 1; space<= (SIZE * 3 -3); space++){
+            System.out.print(" ");
+         }
+         System.out.print("|%%||%%|");
+         System.out.println();
+      }
+   }
+}
